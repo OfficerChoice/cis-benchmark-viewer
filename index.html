@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CIS Benchmark Viewer — Desktop Software</title>
+  <meta name="description" content="Explore and search CIS security benchmark controls for desktop software including Chrome, Firefox, Microsoft Office and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ── SIDEBAR ── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="logo-title">CIS Benchmarks</div>
+          <div class="logo-sub">Desktop Software</div>
+        </div>
+      </div>
+      <button class="sidebar-close" id="sidebarClose" aria-label="Close sidebar">✕</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="sidebar-stats" id="sidebarStats">
+      <div class="stat-item">
+        <span class="stat-num" id="statBenchmarks">—</span>
+        <span class="stat-label">Benchmarks</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" id="statControls">—</span>
+        <span class="stat-label">Controls</span>
+      </div>
+    </div>
+
+    <!-- Benchmark list -->
+    <div class="sidebar-section-label">Benchmarks</div>
+    <nav class="benchmark-nav" id="benchmarkNav"></nav>
+
+    <!-- Filters -->
+    <div class="sidebar-section-label" style="margin-top:1.5rem">Filter by Level</div>
+    <div class="filter-chips" id="levelFilters">
+      <button class="chip chip-active" data-level="all">All Levels</button>
+      <button class="chip" data-level="1">Level 1</button>
+      <button class="chip" data-level="2">Level 2</button>
+    </div>
+
+    <div class="sidebar-section-label" style="margin-top:1rem">Assessment</div>
+    <div class="filter-chips" id="assessmentFilters">
+      <button class="chip chip-active" data-assessment="all">All</button>
+      <button class="chip" data-assessment="Automated">Automated</button>
+      <button class="chip" data-assessment="Manual">Manual</button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <div class="main-wrapper">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+
+      <div class="search-wrapper">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search controls, audit steps, remediation…" autocomplete="off" />
+        <span class="search-count" id="searchCount"></span>
+      </div>
+
+      <div class="topbar-actions">
+        <button class="icon-btn" id="exportBtn" title="Export current view as JSON">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7,10 12,15 17,10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </button>
+        <div class="view-toggle">
+          <button class="view-btn view-btn-active" id="viewGrid" title="Grid view">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            </svg>
+          </button>
+          <button class="view-btn" id="viewList" title="List view">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+              <line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>
+              <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <div class="hero" id="heroBanner">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <div class="hero-badge">CIS Benchmarks · Desktop Software</div>
+        <h1 class="hero-title">Security Control Explorer</h1>
+        <p class="hero-desc">Browse, search, and audit CIS benchmark controls for Chrome, Firefox, Edge, Office, and Safari.</p>
+      </div>
+      <div class="hero-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-state" id="loadingState">
+      <div class="spinner"></div>
+      <p>Loading benchmark data…</p>
+    </div>
+
+    <!-- Error -->
+    <div class="error-state hidden" id="errorState">
+      <div class="error-icon">⚠</div>
+      <h3>Could not load benchmark data</h3>
+      <p id="errorMsg">Make sure parser.py has been run first to generate <code>data/benchmarks.json</code></p>
+      <button class="btn-primary" onclick="loadData()">Retry</button>
+    </div>
+
+    <!-- Controls grid/list -->
+    <main class="controls-area" id="controlsArea">
+      <div class="section-header" id="sectionHeader">
+        <div>
+          <h2 class="section-title" id="sectionTitle">All Controls</h2>
+          <p class="section-subtitle" id="sectionSubtitle"></p>
+        </div>
+        <div class="sort-row">
+          <label for="sortSelect" class="sort-label">Sort by</label>
+          <select id="sortSelect" class="sort-select">
+            <option value="id">Control ID</option>
+            <option value="title">Title A–Z</option>
+            <option value="level">Level</option>
+            <option value="assessment">Assessment</option>
+          </select>
+        </div>
+      </div>
+      <div class="controls-grid" id="controlsGrid"></div>
+      <div class="empty-state hidden" id="emptyState">
+        <div class="empty-icon">🔍</div>
+        <h3>No controls match</h3>
+        <p>Try adjusting your search or filters</p>
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </main>
+  </div>
+
+  <!-- ── DETAIL MODAL ── -->
+  <div class="modal-backdrop hidden" id="modalBackdrop">
+    <div class="modal" id="controlModal">
+      <div class="modal-header">
+        <div class="modal-meta">
+          <span class="modal-id" id="modalId"></span>
+          <span class="badge-assessment" id="modalAssessment"></span>
+          <span class="badge-level" id="modalLevel"></span>
+        </div>
+        <button class="modal-close" id="modalClose">✕</button>
+      </div>
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <div class="modal-benchmark" id="modalBenchmark"></div>
+
+      <div class="modal-tabs">
+        <button class="tab-btn tab-active" data-tab="overview">Overview</button>
+        <button class="tab-btn" data-tab="audit">Audit</button>
+        <button class="tab-btn" data-tab="remediation">Remediation</button>
+        <button class="tab-btn" data-tab="mappings">CIS Mappings</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="tab-panel" id="tab-overview">
+          <div class="field-group">
+            <div class="field-label">Description</div>
+            <div class="field-val" id="modalDescription"></div>
+          </div>
+          <div class="field-group" id="fgRationale">
+            <div class="field-label">Rationale</div>
+            <div class="field-val" id="modalRationale"></div>
+          </div>
+          <div class="field-group" id="fgImpact">
+            <div class="field-label">Impact</div>
+            <div class="field-val" id="modalImpact"></div>
+          </div>
+          <div class="field-group" id="fgReferences">
+            <div class="field-label">References</div>
+            <div class="field-val" id="modalReferences"></div>
+          </div>
+        </div>
+
+        <div class="tab-panel hidden" id="tab-audit">
+          <div class="code-block" id="modalAudit"></div>
+        </div>
+
+        <div class="tab-panel hidden" id="tab-remediation">
+          <div class="code-block" id="modalRemediation"></div>
+        </div>
+
+        <div class="tab-panel hidden" id="tab-mappings">
+          <div id="modalMappings"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
